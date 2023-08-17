@@ -12,4 +12,4 @@ CONTENT
 5.error handling
 
 WHAT WE'VE LEARNT
-how a shell is created,works and finds commands,using fork,working with processes and execution, error handling etcAll header files should be include guarded 
+how a shell is created,works and finds commands,using fork,working with processes and execution, error handling etc
