@@ -38,10 +38,10 @@ char **initial_tokens(char **tokens)
  * Return: a pointer to an array of strings
 */
 
-char **_strtok(char *s, char *delim)
+char **_strtok(char *s, const char *delim)
 {
 	char **tokens = NULL;
-	int i = 0, pos = 0, numtok = 0, dellen;
+	unsigned int i = 0, pos = 0, numtok = 0, dellen;
 
 	if (s == NULL || delim == NULL)
 	{

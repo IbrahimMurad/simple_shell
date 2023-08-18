@@ -1,21 +1,19 @@
 #include "main.h"
 
+
 /**
  * main - starting point
  * @ac: the number of passed arguments
  * @av: an array of strings that holds the passed arguments
- * @env: an array of strings that holds the current environ
  *
  * Return: the exit parameter if passed or 0 if not
 */
 
 int main(int ac, char *av[])
 {
-	_environ = set_my_env();
-	my_PATH = PATHset();
 	if (ac == 1)
 	{
-		prompt();
+		interactive_mode();
 	}
 	else
 	{

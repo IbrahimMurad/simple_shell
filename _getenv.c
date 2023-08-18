@@ -7,7 +7,7 @@
  * Return: a string of the value of the variable
 */
 
-char *_getenv(char *name)
+char *_getenv(const char *name)
 {
 	myenv *temp = _environ;
 

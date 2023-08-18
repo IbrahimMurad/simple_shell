@@ -1,21 +1,23 @@
 #include "main.h"
 
+
 /**
- * prompt - starts the interactive mode
+ * interactive_mode - starts the interactive mode
  *
  * Return: nothing
 */
 
-void prompt(void)
+void interactive_mode(void)
 {
-	char *prompt_sign = "$";
+	char *prompt = "$ ";
 	char buf[4096];
-	int num_of_read_bytes;
+	ssize_t num_of_read_bytes;
 	char *argv[32];
 
+	_environ = set_my_env();
 	while (1)
 	{
-		write(STDIN_FILENO, &prompt_sign, 1);
+		write(STDOUT_FILENO, prompt, 2);
 		num_of_read_bytes = _getline(buf, STDIN_FILENO);
 		if (num_of_read_bytes == -1)
 		{
@@ -25,7 +27,7 @@ void prompt(void)
 		if (num_of_read_bytes > 0)
 		{
 			get_argv(argv, buf);
-			_exe(argv);
+			check_cmd(argv);
 		}
 	}
 }

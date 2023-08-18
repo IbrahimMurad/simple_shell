@@ -11,7 +11,7 @@
 extern char **environ;
 
 /**
- * myenv - a node to hord the name of an environment and its value
+ * struct myenv - a node to hord the name of an environment and its value
  * @name: the name of the environment name
  * @value: a pointer to the value of the name (not a copy)
  * @next: a pointer to the next node of NULL if tail
@@ -25,7 +25,7 @@ typedef struct myenv
 } myenv;
 
 /**
- * struct node - is a node to hold a string
+ * struct strset - is a node to hold a string
  * @data: the string to be held by the node
  * @next: a pointer to teh next node
 */
@@ -36,38 +36,40 @@ typedef struct strset
 	struct strset *next;
 } strset;
 
-myenv *_environ;
+extern myenv *_environ;
 
-strset *my_PATH;
-
-int _strlen(char *s);
+unsigned int _strlen(const char *s);
 
 char *_strcat(char *dest, char *src);
 
 char *str_concat(char *s1, char *s2, char *s3);
 
-char *_strncpy(char *dest, char *src, int n);
+char *_strncpy(char *dest, char *src, unsigned int n);
 
-int _strcmp(char *s1, char *s2);
+int _strcmp(const char *s1, const char *s2);
 
-int _strncmp(char *s1, char *s2, unsigned int n);
+int _strncmp(const char *s1, const char *s2, unsigned int n);
 
-void prompt(void);
-
-int _exe(char *cmd_arr[]);
-
-int _getline(char buf[], int fd);
-
-char **get_argv(char *av[], char *buf);
-
-char **_strtok(char *s, char *delim);
-
-char *_which(char *cmd);
-
-strset *PATHset(void);
+char **_strtok(char *s, const char *delim);
 
 myenv *set_my_env(void);
 
-char *_getenv(char *name);
+char *_getenv(const char *name);
+
+strset *PATHset(void);
+
+void interactive_mode(void);
+
+int _exe(char *cmd_arr[]);
+
+ssize_t _getline(char buf[], int fd);
+
+char **get_argv(char *av[], char *buf);
+
+char *_which(char *cmd);
+
+void free_myenv(myenv *h);
+
+void check_cmd(char *argv[]);
 
 #endif
