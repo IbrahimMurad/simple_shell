@@ -22,10 +22,10 @@ void prompt(void)
 			printf("Couldn't read from user.\n");
 			return;
 		}
-		if (num_of_read_bytes == 0)
+		if (num_of_read_bytes > 0)
 		{
-			return;
+			get_argv(argv, buf);
+			_exe(argv);
 		}
-		get_argv(argv, buf);
 	}
 }

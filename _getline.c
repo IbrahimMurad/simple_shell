@@ -10,11 +10,11 @@
  * or 0 if its EOF
 */
 
-int _getline(char buf[], int fd)
+int _getline(char *buf, int fd)
 {
 	int numOfBytes;
 
-	numOfBytes = read(fd, &buf, 4096);
+	numOfBytes = read(fd, buf, 4096);
 	buf[numOfBytes] = '\0';
 	return (numOfBytes);
 }

@@ -40,7 +40,7 @@ char **initial_tokens(char **tokens)
 
 char **_strtok(char *s, char *delim)
 {
-	char **tokens;
+	char **tokens = NULL;
 	int i = 0, pos = 0, numtok = 0, dellen;
 
 	if (s == NULL || delim == NULL)
