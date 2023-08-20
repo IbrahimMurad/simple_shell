@@ -8,25 +8,23 @@
  * Return: a pointer to the node
 */
 
-myenv *set_myenv_n_v(char *s)
+void set_myenv_n_v(myenv **node, char *s)
 {
-	myenv *temp;
 	int i;
 
-	temp = (myenv *) malloc(sizeof(myenv));
-	temp->name = (char *) malloc(64);
-	if (temp == NULL || temp->name == NULL)
+	*node = (myenv *) malloc(sizeof(myenv));
+	(*node)->name = (char *) malloc(64);
+	if (node == NULL || (*node)->name == NULL)
 	{
-		return (NULL);
+		return;
 	}
 	for (i = 0; s[i] != '='; i++)
 	{
-		temp->name[i] = s[i];
+		(*node)->name[i] = s[i];
 	}
-	temp->name[i] = '\0';
-	temp->value = s + i + 1;
-	temp->next = NULL;
-	return (temp);
+	(*node)->name[i] = '\0';
+	(*node)->value = s + i + 1;
+	(*node)->next = NULL;
 }
 /**
  * set_my_env - builds a linked list that stores the env
@@ -34,23 +32,20 @@ myenv *set_myenv_n_v(char *s)
  * Return: a pointer to the head of the list
 */
 
-myenv *set_my_env(void)
+void *set_my_env(void)
 {
-	myenv *head;
 	myenv *node;
-	myenv *New;
+	myenv *New = NULL;
 	int i;
 
-	New = set_myenv_n_v(environ[0]);
-	head = New;
-	node = New;
+	set_myenv_n_v(&my_environ, environ[0]);
+	node = my_environ;
 	for (i = 1; environ[i] != NULL; i++)
 	{
-		New = set_myenv_n_v(environ[i]);
+		set_myenv_n_v(&New, environ[i]);
 		node->next = New;
 		node = node->next;
 	}
-	return (head);
 }
 
 /**

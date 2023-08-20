@@ -20,5 +20,6 @@ char **get_argv(char *av[], char *buf)
 		i++;
 	}
 	av[i] = tokens[i];
+	free(tokens);
 	return (av);
 }

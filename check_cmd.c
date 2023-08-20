@@ -10,10 +10,13 @@
 
 void check_cmd(char *argv[])
 {
-	if (_strcmp(argv[0], "exit") == 0)
+	if (_strcmp(argv[1], "exit") == 0)
 	{
-		free_myenv(_environ);
-		exit(0);
+		my_exit(argv);
+	}
+	else if (_strcmp(argv[1], "env") == 0)
+	{
+		_printenv();
 	}
 	else
 	{

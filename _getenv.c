@@ -9,7 +9,7 @@
 
 char *_getenv(const char *name)
 {
-	myenv *temp = _environ;
+	myenv *temp = my_environ;
 
 	while (temp)
 	{

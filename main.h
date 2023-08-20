@@ -36,7 +36,7 @@ typedef struct strset
 	struct strset *next;
 } strset;
 
-extern myenv *_environ;
+extern myenv *my_environ;
 
 unsigned int _strlen(const char *s);
 
@@ -52,13 +52,15 @@ int _strncmp(const char *s1, const char *s2, unsigned int n);
 
 char **_strtok(char *s, const char *delim);
 
-myenv *set_my_env(void);
+void *set_my_env(void);
+
+void set_myenv_n_v(myenv **node, char *s);
 
 char *_getenv(const char *name);
 
 strset *PATHset(void);
 
-void interactive_mode(void);
+void interactive_mode(char *s);
 
 int _exe(char *cmd_arr[]);
 
@@ -71,5 +73,11 @@ char *_which(char *cmd);
 void free_myenv(myenv *h);
 
 void check_cmd(char *argv[]);
+
+void my_exit(char *argv[]);
+
+unsigned int sh_atoi(char *s);
+
+void _printenv(void);
 
 #endif

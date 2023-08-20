@@ -56,10 +56,10 @@ int _exe(char *argv[])
 	pid_t mypid;
 	int s;
 
-	argv[0] = _which(argv[0]);
-	if (argv[0] == NULL)
+	argv[1] = _which(argv[1]);
+	if (argv[1] == NULL)
 	{
-		perror("./hsh");
+		perror(argv[0]);
 		return (-1);
 	}
 	else
@@ -67,12 +67,13 @@ int _exe(char *argv[])
 		mypid = fork();
 		if (mypid == 0)
 		{
-			if (execve(argv[0], argv, NULL) == 0)
+			if (execve(argv[1], argv + 1, NULL) == 0)
 			{
 				return (0);
 			}
 			else
 			{
+				perror(argv[1]);
 				return (-1);
 			}
 		}

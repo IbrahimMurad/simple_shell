@@ -14,17 +14,9 @@ char **initial_tokens(char **tokens)
 	int i;
 
 	tokens = (char **) malloc(sizeof(char *) * 32);
-	if (tokens == NULL)
-	{
-		return (NULL);
-	}
 	for (i = 0; i < 32; i++)
 	{
 		tokens[i] = (char *) malloc(1024);
-		if (tokens[i] == NULL)
-		{
-			return (NULL);
-		}
 	}
 	return (tokens);
 }

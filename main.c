@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 /**
  * main - starting point
  * @ac: the number of passed arguments
@@ -11,9 +10,10 @@
 
 int main(int ac, char *av[])
 {
+	set_my_env();
 	if (ac == 1)
 	{
-		interactive_mode();
+		interactive_mode(av[0]);
 	}
 	else
 	{
