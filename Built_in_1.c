@@ -1,6 +1,5 @@
 #include "main.h"
 
-myenv *my_environ;
 
 /**
  * is_anumber - checks if the passed string is a legal number
@@ -31,10 +30,9 @@ int is_anumber(char *s)
  *
  * Return: the number
 */
-unsigned int sh_atoi(char *s)
+int sh_atoi(char *s)
 {
-	int i;
-	unsigned int num = 0;
+	int i, num = 0;
 
 	for (i = 0; s[i] != '\0'; i++)
 	{
@@ -84,8 +82,13 @@ void my_exit(char *argv[])
 	exit(status);
 }
 
+/**
+ * _env - prints the current environment to the screen
+ *
+ * Return: nothing
+*/
 
-void _printenv(void)
+void _env(void)
 {
 	int i = 0;
 

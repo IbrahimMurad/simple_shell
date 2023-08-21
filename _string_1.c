@@ -6,9 +6,9 @@
  * Return: int (the length of the string @s)
  */
 
-unsigned int _strlen(const char *s)
+size_t _strlen(const char *s)
 {
-	unsigned int i = 0;
+	size_t i = 0;
 
 	while (*(s + i) != '\0')
 	{
@@ -27,9 +27,9 @@ unsigned int _strlen(const char *s)
  * Return: an integer (equals, less than or greater than zero)
  */
 
-int _strncmp(const char *s1, const char *s2, unsigned int n)
+int _strncmp(const char *s1, const char *s2, size_t n)
 {
-	unsigned int i;
+	size_t i;
 
 	for (i = 0; i < n && (s1[i] != '\0') && (s2[i] != '\0'); i++)
 	{
@@ -55,7 +55,7 @@ int _strncmp(const char *s1, const char *s2, unsigned int n)
  * Return: a pointer to the new string
  */
 
-char *_strncpy(char *dest, char *src, unsigned int n)
+char *_strncpy(char *dest, char *src, size_t n)
 {
 	unsigned int i = 0;
 
@@ -67,34 +67,6 @@ char *_strncpy(char *dest, char *src, unsigned int n)
 	{
 		dest[i] = '\0';
 	}
-	return (dest);
-}
-
-
-/**
- * _strcat - concatenates two strings.
- * @dest: The first string
- * @src: the second string
- *
- * Return: a pointer to the new string
- */
-
-char *_strcat(char *dest, char *src)
-{
-	int i = 0;
-	int j = 0;
-
-	while (dest[i] != '\0')
-	{
-		i++;
-	}
-	while (src[j] != '\0')
-	{
-		dest[i] = src[j];
-		i++;
-		j++;
-	}
-	dest[i] = src[j];
 	return (dest);
 }
 

@@ -17,7 +17,7 @@ int main(int ac, char *av[])
 	}
 	else
 	{
-		_exe(av + 1);
+		check_cmd(av);
 	}
 	exit(0);
 }

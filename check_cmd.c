@@ -1,5 +1,36 @@
 #include "main.h"
 
+
+#define EXIT 0
+#define ENV 1
+#define SETENV 2
+#define UNSETENV 3
+#define CD 4
+#define ECHO 5
+
+/**
+ * which_command - checks the passed command to see
+ * if it is a buit-in command or else.
+ * @s: the passed command
+ *
+ * Return: an integer indicating to the command
+*/
+int which_command(char *s)
+{
+	int i;
+	char *my_Builtin_cmd[] = {"exit", "env", "setenv", "unsetenv", "cd", "echo"};
+
+	for (i = 0; i < 6; i++)
+	{
+		if (_strcmp(s, my_Builtin_cmd[i]) == 0)
+		{
+			return (i);
+		}
+	}
+	return (6);
+}
+
+
 /**
  * check_cmd - checks the first argument of the array
  * if it is a built-in comand or a custum implemented command
@@ -10,16 +41,31 @@
 
 void check_cmd(char *argv[])
 {
-	if (_strcmp(argv[1], "exit") == 0)
+	int curr_cmd;
+
+	curr_cmd = which_command(argv[1]);
+	switch (curr_cmd)
 	{
-		my_exit(argv);
-	}
-	else if (_strcmp(argv[1], "env") == 0)
-	{
-		_printenv();
-	}
-	else
-	{
-		_exe(argv);
+		case EXIT:
+			my_exit(argv);
+			break;
+		case ENV:
+			_env();
+			break;
+		case SETENV:
+			_setenv(argv);
+			break;
+		case UNSETENV:
+			_unsetenv(argv);
+			break;
+		case CD:
+			_cd(argv);
+			break;
+		case ECHO:
+			_echo(argv);
+			break;
+		default:
+			_exe(argv);
+			break;
 	}
 }

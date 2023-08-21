@@ -3,6 +3,7 @@
 
 /**
  * interactive_mode - starts the interactive mode
+ * @s: the running programme's name
  *
  * Return: nothing
 */

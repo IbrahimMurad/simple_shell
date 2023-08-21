@@ -1,6 +1,39 @@
 #include "main.h"
 
 /**
+ * _strdup -  allocate a new space in memory,
+ * and fills it with a copy of the string given as a parameter.
+ * @str: the given string
+ *
+ * Return: a pointer to a newly allocated space in memory
+ */
+
+char *_strdup(char *str)
+{
+	char *ptr;
+	unsigned int i;
+	size_t size;
+
+	if (str == NULL)
+	{
+		return (NULL);
+	}
+	size = _strlen(str);
+	ptr = (char *) malloc(size + 1);
+	if (ptr == NULL)
+	{
+		return (NULL);
+	}
+	for (i = 0; i < size; i++)
+	{
+		ptr[i] = str[i];
+	}
+	ptr[i] = '\0';
+	return (ptr);
+}
+
+
+/**
  * str_concat - concatenates three strings.
  * @s1: the first string
  * @s2: the second string
@@ -14,7 +47,7 @@
 char *str_concat(char *s1, char *s2, char *s3)
 {
 	char *ptr;
-	unsigned int i, size1, size2, size3, size;
+	size_t i, size1, size2, size3, size;
 
 	if (s1 == NULL)
 		size1 = 0;

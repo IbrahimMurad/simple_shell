@@ -1,9 +1,13 @@
 #include "main.h"
 
 
+myenv *my_environ;
+
 /**
  * set_myenv_n_v - sets the name and the value of myenv node
  * @s: the environ string that is in the form NAME=VALUE
+ * @node: a pointer to a pointer to the node of the myenv list
+ * to set its name and value
  *
  * Return: a pointer to the node
 */
@@ -32,9 +36,9 @@ void set_myenv_n_v(myenv **node, char *s)
  * Return: a pointer to the head of the list
 */
 
-void *set_my_env(void)
+void set_my_env(void)
 {
-	myenv *node;
+	myenv *node = NULL;
 	myenv *New = NULL;
 	int i;
 
@@ -98,4 +102,26 @@ strset *PATHset(void)
 	}
 	temp = NULL;
 	return (head);
+}
+
+/**
+ * _getenv - gets an environ variable
+ * @name: the name of the variable
+ *
+ * Return: a string of the value of the variable
+*/
+
+char *_getenv(const char *name)
+{
+	myenv *temp = my_environ;
+
+	while (temp)
+	{
+		if (_strcmp(temp->name, name) == 0)
+		{
+			return (temp->value);
+		}
+		temp = temp->next;
+	}
+	return (NULL);
 }
