@@ -1,9 +1,5 @@
 #include "main.h"
 
-
-
-
-
 /**
  * _which - looks for the passed command
  * @cmd: the command to look for
@@ -13,31 +9,27 @@
 
 char *_which(char *cmd)
 {
-	strset *temp = PATHset();
+	strset *temp;
 	char *full_path_cmd = NULL;
 	struct stat st;
 
-	if (cmd[0] == '/')
+	if (stat(cmd, &st) == 0)
 	{
-		if (stat(cmd, &st) == 0)
-		{
-			return (cmd);
-		}
-		else
-		{
-			return (NULL);
-		}
+		return (cmd);
 	}
+	temp = PATHset();
 	while (temp != NULL)
 	{
 		free(full_path_cmd);
 		full_path_cmd = str_concat(temp->data, "/", cmd);
 		if (stat(full_path_cmd, &st) == 0)
 		{
+			free_str_list(temp);
 			return (full_path_cmd);
 		}
 		temp = temp->next;
 	}
+	free_str_list(temp);
 	return (NULL);
 }
 
@@ -54,34 +46,39 @@ char *_which(char *cmd)
 int _exe(char *argv[])
 {
 	pid_t mypid;
-	int s;
+	int s, rtrn_value = -1;
+	char *cmd_pathname;
 
-	argv[1] = _which(argv[1]);
 	if (argv[1] == NULL)
 	{
-		perror(argv[0]);
 		return (-1);
 	}
-	else
+	cmd_pathname = _which(argv[1]);
+	if (cmd_pathname == NULL)
 	{
-		mypid = fork();
-		if (mypid == 0)
+		write(STDERR_FILENO, "command not found\n", 19);
+		return (-1);
+	}
+	mypid = fork();
+	if (mypid == 0)
+	{
+		if (execve(cmd_pathname, argv + 1, NULL) == 0)
 		{
-			if (execve(argv[1], argv + 1, NULL) == 0)
-			{
-				return (0);
-			}
-			else
-			{
-				perror(argv[1]);
-				return (-1);
-			}
+			rtrn_value = 0;
+			return (0);
 		}
 		else
 		{
-			wait(&s);
-			return (0);
+			perror(argv[1]);
+			rtrn_value = -1;
+			return (-1);
 		}
+		free(cmd_pathname);
+		free_strstr(argv);
 	}
-	return (-1);
+	else
+	{
+		wait(&s);
+		return (rtrn_value);
+	}
 }

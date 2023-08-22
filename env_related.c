@@ -1,35 +1,8 @@
 #include "main.h"
 
 
-myenv *my_environ;
 
-/**
- * set_myenv_n_v - sets the name and the value of myenv node
- * @s: the environ string that is in the form NAME=VALUE
- * @node: a pointer to a pointer to the node of the myenv list
- * to set its name and value
- *
- * Return: a pointer to the node
-*/
 
-void set_myenv_n_v(myenv **node, char *s)
-{
-	int i;
-
-	*node = (myenv *) malloc(sizeof(myenv));
-	(*node)->name = (char *) malloc(64);
-	if (node == NULL || (*node)->name == NULL)
-	{
-		return;
-	}
-	for (i = 0; s[i] != '='; i++)
-	{
-		(*node)->name[i] = s[i];
-	}
-	(*node)->name[i] = '\0';
-	(*node)->value = s + i + 1;
-	(*node)->next = NULL;
-}
 /**
  * set_my_env - builds a linked list that stores the env
  *
@@ -38,36 +11,37 @@ void set_myenv_n_v(myenv **node, char *s)
 
 void set_my_env(void)
 {
-	myenv *node = NULL;
-	myenv *New = NULL;
-	int i;
+	char **temp_environ;
+	size_t i = 0;
 
-	set_myenv_n_v(&my_environ, environ[0]);
-	node = my_environ;
-	for (i = 1; environ[i] != NULL; i++)
+	temp_environ = (char **) malloc(sizeof(char *) * 200);
+	if (temp_environ == NULL)
 	{
-		set_myenv_n_v(&New, environ[i]);
-		node->next = New;
-		node = node->next;
+		return;
 	}
+	i = 0;
+	while (environ[i])
+	{
+		temp_environ[i] = _strdup(environ[i]);
+		i++;
+	}
+	temp_environ[i] = NULL;
+	environ = temp_environ;
 }
 
 /**
  * free_myenv - frees the memory allocated for myenv list
- * @h: a pointer to the head of the myenv list
+ *
  * Return: nothing
 */
 
-void free_myenv(myenv *h)
+void free_myenv(void)
 {
-	myenv *temp = h;
+	int i;
 
-	while (h)
+	for (i = 0; i < 200; i++)
 	{
-		h = h->next;
-		free(temp->name);
-		free(temp);
-		temp = h;
+		free(environ[i]);
 	}
 }
 
@@ -113,15 +87,42 @@ strset *PATHset(void)
 
 char *_getenv(const char *name)
 {
-	myenv *temp = my_environ;
+	int i = 0;
+	size_t name_len;
 
-	while (temp)
+	if (name == NULL || *name == '\0')
 	{
-		if (_strcmp(temp->name, name) == 0)
+		return (NULL);
+	}
+	name_len = _strlen(name);
+	while (environ[i])
+	{
+		if (!_strncmp(environ[i], name, name_len) && environ[i][name_len] == '=')
 		{
-			return (temp->value);
+			return (environ[i] + name_len + 1);
 		}
-		temp = temp->next;
+		i++;
 	}
 	return (NULL);
+}
+
+
+/**
+ * free_str_list - frees the PATH set
+ * @h: a pointer to the head of the set
+ *
+ * Return: nothing
+*/
+
+void free_str_list(strset *h)
+{
+	strset *temp = h;
+
+	while (h)
+	{
+		h = h->next;
+		free(h->data);
+		free(temp);
+		temp = h;
+	}
 }

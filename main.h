@@ -12,21 +12,6 @@
 /* Declaring the current environment passed by the shell */
 extern char **environ;
 
-
-/**
- * struct myenv - a node to hord the name of an environment and its value
- * @name: the name of the environment name
- * @value: a pointer to the value of the name (not a copy)
- * @next: a pointer to the next node of NULL if tail
-*/
-
-typedef struct myenv
-{
-	char *name;
-	char *value;
-	struct myenv *next;
-} myenv;
-
 /**
  * struct strset - is a node to hold a string
  * @data: the string to be held by the node
@@ -39,8 +24,6 @@ typedef struct strset
 	struct strset *next;
 } strset;
 
-extern myenv *my_environ;
-
 
 /* string library functions but my own reimplementation */
 /* twisted a little to suit the current project */
@@ -49,13 +32,15 @@ size_t _strlen(const char *s);
 
 char *_strdup(char *str);
 
-char *str_concat(char *s1, char *s2, char *s3);
+char *str_concat(const char *s1, const char *s2, const char *s3);
 
-char *_strncpy(char *dest, char *src, size_t n);
+char *_strncpy(char *dest, const char *src, size_t n);
 
 int _strcmp(const char *s1, const char *s2);
 
 int _strncmp(const char *s1, const char *s2, size_t n);
+
+char *_strchr(char *s, const char c);
 
 
 
@@ -68,6 +53,8 @@ ssize_t _getline(char buf[], int fd);
 
 char **get_argv(char *av[], char *buf);
 
+void free_strstr(char **tokens);
+
 
 
 
@@ -75,13 +62,13 @@ char **get_argv(char *av[], char *buf);
 
 void set_my_env(void);
 
-void set_myenv_n_v(myenv **node, char *s);
-
 char *_getenv(const char *name);
 
 strset *PATHset(void);
 
-void free_myenv(myenv *h);
+void free_myenv(void);
+
+void free_str_list(strset *h);
 
 
 
@@ -90,27 +77,35 @@ void free_myenv(myenv *h);
 
 void interactive_mode(char *s);
 
+int excute_line(char *running_prog, char *line);
+
+int excute_one_cmd(char *prog_name, char *command_line);
+
 int _exe(char *cmd_arr[]);
 
 char *_which(char *cmd);
 
-void check_cmd(char *argv[]);
+int check_cmd(char *argv[]);
 
 
 
 
 /* my built-in functions */
 
-void my_exit(char *argv[]);
+int my_exit(char *argv[]);
 
-void _env(void);
+int _env(char *argv[]);
 
-myenv *_setenv(char *argv[]);
+int excute_setenv(char *argv[]);
 
-int _unsetenv(char *argv[]);
+int excute_unsetenv(char *argv[]);
 
-int *_cd(char *argv[]);
+int excute_cd(char *argv[]);
 
-int *_echo(char *argv[]);
+int _setenv(const char *name, const char *value, int overwrite);
+
+int _unsetenv(const char *name);
+
+int _cd(const char *dir);
 
 #endif

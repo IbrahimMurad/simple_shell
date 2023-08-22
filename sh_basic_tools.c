@@ -32,7 +32,7 @@ char **initial_tokens(char **tokens)
 {
 	int i;
 
-	tokens = (char **) malloc(sizeof(char *) * 32);
+	tokens = (char **) malloc(sizeof(char *) * 64);
 	for (i = 0; i < 32; i++)
 	{
 		tokens[i] = (char *) malloc(1024);
@@ -73,6 +73,8 @@ char **_strtok(char *s, const char *delim)
 				numtok++;
 				_strncpy(tokens[numtok - 1], s + pos, i - pos);
 				tokens[numtok - 1][i - pos] = '\0';
+				if ((i - pos) == 0)
+					numtok--;
 				pos += ((i - pos) + dellen);
 			}
 		}
@@ -82,6 +84,23 @@ char **_strtok(char *s, const char *delim)
 	_strncpy(tokens[numtok - 2], s + pos, i - pos);
 	tokens[numtok - 1] = NULL;
 	return (tokens);
+}
+
+/**
+ * free_strstr - frees an array of strings allocated by strtok
+ * @tokens: a pointer to the array
+ *
+ * Return: nothing
+*/
+
+void free_strstr(char **tokens)
+{
+	int i;
+
+	for (i = 0; i < 64; i++)
+	{
+		free(tokens[i]);
+	}
 }
 
 

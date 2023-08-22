@@ -55,7 +55,7 @@ int _strncmp(const char *s1, const char *s2, size_t n)
  * Return: a pointer to the new string
  */
 
-char *_strncpy(char *dest, char *src, size_t n)
+char *_strncpy(char *dest, const char *src, size_t n)
 {
 	unsigned int i = 0;
 

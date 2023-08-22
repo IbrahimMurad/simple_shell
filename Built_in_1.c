@@ -51,7 +51,7 @@ int sh_atoi(char *s)
  * Return: nothing
 */
 
-void my_exit(char *argv[])
+int my_exit(char *argv[])
 {
 	int status;
 	char newline = '\n';
@@ -75,26 +75,34 @@ void my_exit(char *argv[])
 			write(STDERR_FILENO, ": Illegal number: ", 18);
 			write(STDERR_FILENO, argv[2], _strlen(argv[2]));
 			write(STDERR_FILENO, &newline, 1);
-			return;
+			return (-1);
 		}
 	}
-	free_myenv(my_environ);
+	free_myenv();
 	exit(status);
+	return (status);
 }
 
 /**
  * _env - prints the current environment to the screen
+ * @argv: an array of strings that hold the prog_name,
+ * the command and the arguments.
  *
  * Return: nothing
 */
 
-void _env(void)
+int _env(char *argv[])
 {
 	int i = 0;
 
 	while (environ[i])
 	{
-		printf("%s\n", environ[i]);
+		if (write(STDOUT_FILENO, environ[i], _strlen(environ[i])) == -1)
+		{
+			perror(argv[0]);
+			return (-1);
+		}
 		i++;
 	}
+	return (0);
 }

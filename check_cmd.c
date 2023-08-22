@@ -6,7 +6,6 @@
 #define SETENV 2
 #define UNSETENV 3
 #define CD 4
-#define ECHO 5
 
 /**
  * which_command - checks the passed command to see
@@ -18,7 +17,7 @@
 int which_command(char *s)
 {
 	int i;
-	char *my_Builtin_cmd[] = {"exit", "env", "setenv", "unsetenv", "cd", "echo"};
+	char *my_Builtin_cmd[] = {"exit", "env", "setenv", "unsetenv", "cd"};
 
 	for (i = 0; i < 6; i++)
 	{
@@ -39,33 +38,28 @@ int which_command(char *s)
  * Return: nothing
 */
 
-void check_cmd(char *argv[])
+int check_cmd(char *argv[])
 {
-	int curr_cmd;
+	int curr_cmd, rtrn_value;
 
 	curr_cmd = which_command(argv[1]);
 	switch (curr_cmd)
 	{
 		case EXIT:
-			my_exit(argv);
+			rtrn_value = my_exit(argv);
 			break;
 		case ENV:
-			_env();
+			rtrn_value = _env(argv);
 			break;
 		case SETENV:
-			_setenv(argv);
+			rtrn_value = excute_setenv(argv);
 			break;
 		case UNSETENV:
-			_unsetenv(argv);
-			break;
-		case CD:
-			_cd(argv);
-			break;
-		case ECHO:
-			_echo(argv);
+			rtrn_value = excute_unsetenv(argv);
 			break;
 		default:
-			_exe(argv);
+			rtrn_value = _exe(argv);
 			break;
 	}
+	return (rtrn_value);
 }

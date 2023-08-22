@@ -44,7 +44,7 @@ char *_strdup(char *str)
  * and null terminated
  */
 
-char *str_concat(char *s1, char *s2, char *s3)
+char *str_concat(const char *s1, const char *s2, const char *s3)
 {
 	char *ptr;
 	size_t i, size1, size2, size3, size;
@@ -77,4 +77,32 @@ char *str_concat(char *s1, char *s2, char *s3)
 	}
 	ptr[i] = '\0';
 	return (ptr);
+}
+
+
+/**
+ * _strchr - locates a character in a string
+ * @s: the string in which the charachter to be searched is
+ * @c: the charachter to be searced
+ *
+ * Return: a pointer where the character is stored
+ */
+
+char *_strchr(char *s, const char c)
+{
+	int i;
+	char *temp = NULL;
+
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		if (s[i] == c)
+		{
+			return (&s[i]);
+		}
+	}
+	if (c == '\0')
+	{
+		return (&s[i]);
+	}
+	return (temp);
 }
