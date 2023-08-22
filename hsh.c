@@ -33,11 +33,11 @@ void my_hsh(char *s)
 
 void interactive_mode(char *s)
 {
-	char *prompt = "$ ";
+	char *prompt = "#cisfun$ ";
 	char *buf = NULL;
 	ssize_t num_of_read_bytes;
 
-	if (write(STDOUT_FILENO, prompt, 3) == -1)
+	if (write(STDOUT_FILENO, prompt, 9) == -1)
 	{
 		perror(s);
 	}
