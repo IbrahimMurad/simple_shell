@@ -42,6 +42,8 @@ int _strncmp(const char *s1, const char *s2, size_t n);
 
 char *_strchr(char *s, const char c);
 
+char *_strcat(char *dest, char *src);
+
 
 
 
@@ -54,6 +56,8 @@ ssize_t _getline(char buf[], int fd);
 char **get_argv(char *av[], char *buf);
 
 void free_strstr(char **tokens);
+
+void free_argv(char *argv[]);
 
 
 
@@ -75,13 +79,19 @@ void free_str_list(strset *h);
 
 /* Excution-related functions */
 
+void my_hsh(char *s);
+
 void interactive_mode(char *s);
+
+void non_interactive_mode(char *s);
 
 int excute_line(char *running_prog, char *line);
 
 int excute_one_cmd(char *prog_name, char *command_line);
 
-int _exe(char *cmd_arr[]);
+int before_exe(char *cmd_arr[]);
+
+int _exe(char *s, char *cmd_arr[]);
 
 char *_which(char *cmd);
 

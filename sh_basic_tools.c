@@ -20,26 +20,6 @@ ssize_t _getline(char *buf, int fd)
 	return (numOfBytes);
 }
 
-/**
- * initial_tokens - allocate the required memory for the tokens
- * @tokens: a pointer to the tokens
- *
- * Return: a pointer to the tokens (after allocating the memory)
- * or NULL on errors
-*/
-
-char **initial_tokens(char **tokens)
-{
-	int i;
-
-	tokens = (char **) malloc(sizeof(char *) * 64);
-	for (i = 0; i < 32; i++)
-	{
-		tokens[i] = (char *) malloc(1024);
-	}
-	return (tokens);
-}
-
 
 /**
  * _strtok - splits a string into tokens
@@ -54,11 +34,7 @@ char **_strtok(char *s, const char *delim)
 	char **tokens = NULL;
 	size_t i = 0, pos = 0, numtok = 0, dellen;
 
-	if (s == NULL || delim == NULL)
-	{
-		return (NULL);
-	}
-	tokens = initial_tokens(tokens);
+	tokens = (char **) malloc(sizeof(char *) * 64);
 	if (tokens == NULL)
 	{
 		return (NULL);
@@ -68,21 +44,30 @@ char **_strtok(char *s, const char *delim)
 	{
 		if (s[i] == delim[0])
 		{
+			if (s[i + 1] == '\0')
+				break;
 			if (_strncmp(s + i, delim, dellen) == 0)
 			{
-				numtok++;
-				_strncpy(tokens[numtok - 1], s + pos, i - pos);
-				tokens[numtok - 1][i - pos] = '\0';
-				if ((i - pos) == 0)
-					numtok--;
+				tokens[numtok] = (char *) malloc(1024);
+				_strncpy(tokens[numtok], s + pos, i - pos);
+				tokens[numtok][i - pos] = '\0';
+				if ((i - pos) != 0)
+				{
+					numtok++;
+				}
+				else
+				{
+					free(tokens[numtok]);
+				}
 				pos += ((i - pos) + dellen);
+				i += (dellen - 1);
 			}
 		}
 		i++;
 	}
-	numtok += 2;
-	_strncpy(tokens[numtok - 2], s + pos, i - pos);
-	tokens[numtok - 1] = NULL;
+	tokens[numtok] = (char *) malloc(1024);
+	_strncpy(tokens[numtok], s + pos, i - pos);
+	tokens[numtok + 1] = NULL;
 	return (tokens);
 }
 
@@ -97,12 +82,12 @@ void free_strstr(char **tokens)
 {
 	int i;
 
-	for (i = 0; i < 64; i++)
+	for (i = 0; i < 64 && tokens[i] != NULL; i++)
 	{
 		free(tokens[i]);
 	}
+	free(tokens);
 }
-
 
 /**
  * get_argv - converts a string into an array of tokens
@@ -112,7 +97,7 @@ void free_strstr(char **tokens)
  * Return: a pointer to av
 */
 
-char **get_argv(char *av[], char *buf)
+char **get_argv(char **av, char *buf)
 {
 	char **tokens;
 	int i = 0;
@@ -126,4 +111,21 @@ char **get_argv(char *av[], char *buf)
 	av[i] = tokens[i];
 	free(tokens);
 	return (av);
+}
+
+/**
+ * free_argv - frees the memories allocated inside an array of strings
+ * @argv: the array of strings
+ *
+ * Return: nothing
+*/
+
+void free_argv(char *argv[])
+{
+	int i;
+
+	for (i = 0; i < 64 && argv[i] != NULL; i++)
+	{
+		free(argv[i]);
+	}
 }

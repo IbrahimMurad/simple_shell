@@ -13,11 +13,12 @@ int main(int ac, char *av[])
 	set_my_env();
 	if (ac == 1)
 	{
-		interactive_mode(av[0]);
+		my_hsh(av[0]);
 	}
 	else
 	{
-		check_cmd(av);
+		excute_line(av[0], av[1]);
 	}
-	exit(0);
+	free_myenv();
+	return (0);
 }

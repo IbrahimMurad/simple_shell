@@ -49,18 +49,9 @@ char *str_concat(const char *s1, const char *s2, const char *s3)
 	char *ptr;
 	size_t i, size1, size2, size3, size;
 
-	if (s1 == NULL)
-		size1 = 0;
-	else
-		size1 = _strlen(s1);
-	if (s2 == NULL)
-		size2 = 0;
-	else
-		size2 = _strlen(s2);
-	if (s3 == NULL)
-		size3 = 0;
-	else
-		size3 = _strlen(s3);
+	size1 = _strlen(s1);
+	size2 = _strlen(s2);
+	size3 = _strlen(s3);
 	size = size1 + size2 + size3;
 	ptr = (char *) malloc(size + 1);
 	for (i = 0; i < size1; i++)
@@ -106,3 +97,31 @@ char *_strchr(char *s, const char c)
 	}
 	return (temp);
 }
+
+/**
+ * _strcat - concatenates two strings.
+ * @dest: The first string
+ * @src: the second string
+ *
+ * Return: a pointer to the new string
+ */
+
+char *_strcat(char *dest, char *src)
+{
+	int i = 0;
+	int j = 0;
+
+	while (dest[i] != '\0')
+	{
+		i++;
+	}
+	while (src[j] != '\0')
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+	dest[i] = src[j];
+	return (dest);
+}
+

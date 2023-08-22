@@ -75,10 +75,13 @@ int my_exit(char *argv[])
 			write(STDERR_FILENO, ": Illegal number: ", 18);
 			write(STDERR_FILENO, argv[2], _strlen(argv[2]));
 			write(STDERR_FILENO, &newline, 1);
+			free_myenv();
+			free_argv(argv + 1);
 			return (-1);
 		}
 	}
 	free_myenv();
+	free_argv(argv + 1);
 	exit(status);
 	return (status);
 }
@@ -102,6 +105,7 @@ int _env(char *argv[])
 			perror(argv[0]);
 			return (-1);
 		}
+		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
 	return (0);

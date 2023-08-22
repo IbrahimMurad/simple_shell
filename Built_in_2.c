@@ -78,9 +78,10 @@ int excute_unsetenv(char *argv[])
 
 int _setenv(const char *name, const char *value, int overwrite)
 {
-	size_t name_len, i = 0;
+	size_t name_len, vallen, i = 0;
 
 	name_len = _strlen(name);
+	vallen = _strlen(value);
 	for (i = 0; i < name_len; i++)
 	{
 		if (name[i] == '=')
@@ -99,10 +100,12 @@ int _setenv(const char *name, const char *value, int overwrite)
 			}
 			return (0);
 		}
+		i++;
 	}
+	environ[i] = (char *) malloc(name_len + vallen + 2);
 	_strncpy(environ[i], name, name_len);
 	_strncpy(environ[i] + name_len, "=", 1);
-	_strncpy(environ[i] + name_len + 1, value, _strlen(value));
+	_strncpy(environ[i] + name_len + 1, value, vallen);
 	environ[i + 1] = NULL;
 	return (0);
 }
@@ -140,6 +143,7 @@ int _unsetenv(const char *name)
 			environ[i] = environ[i + 1];
 			return (0);
 		}
+		i++;
 	}
 	return (0);
 }

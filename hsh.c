@@ -2,6 +2,29 @@
 
 
 /**
+ * my_hsh - starts the shell in interactive and non-interactive modes
+ * @s: the running programme's name
+ *
+ * Return: nothing
+*/
+
+void my_hsh(char *s)
+{
+	while (1)
+	{
+		if (isatty(STDIN_FILENO) == 1)
+		{
+			interactive_mode(s);
+		}
+		else
+		{
+			non_interactive_mode(s);
+			return;
+		}
+	}
+}
+
+/**
  * interactive_mode - starts the interactive mode
  * @s: the running programme's name
  *
@@ -14,25 +37,52 @@ void interactive_mode(char *s)
 	char *buf = NULL;
 	ssize_t num_of_read_bytes;
 
-	buf = (char *) malloc(8192);
-	while (1)
+	if (write(STDOUT_FILENO, prompt, 3) == -1)
 	{
-		if (write(STDOUT_FILENO, prompt, 2) == -1)
-		{
-			perror(s);
-		}
-		num_of_read_bytes = _getline(buf, STDIN_FILENO);
-		if (num_of_read_bytes == -1)
-		{
-			write(STDOUT_FILENO, "Couldn't read from user.\n", 26);
-			exit(1);
-		}
-		if (num_of_read_bytes > 0)
-		{
-			excute_line(s, buf);
-		}
+		perror(s);
+	}
+	buf = (char *) malloc(8192);
+	num_of_read_bytes = _getline(buf, STDIN_FILENO);
+	if (num_of_read_bytes == -1)
+	{
+		write(STDOUT_FILENO, "Couldn't read from user.\n", 26);
+		free(buf);
+		exit(1);
+	}
+	if (num_of_read_bytes > 0)
+	{
+		excute_line(s, buf);
+		free(buf);
 	}
 }
+
+
+/**
+ * non_interactive_mode - starts the non-interactive mode
+ * @s: the running programme's name
+ *
+ * Return: nothing
+*/
+
+void non_interactive_mode(char *s)
+{
+	char *buf = NULL;
+	ssize_t num_of_read_bytes;
+
+	buf = (char *) malloc(8192);
+	num_of_read_bytes = _getline(buf, STDIN_FILENO);
+	if (num_of_read_bytes == -1)
+	{
+		write(STDOUT_FILENO, "Couldn't read from user.\n", 26);
+		free(buf);
+		exit(1);
+	}
+	if (num_of_read_bytes > 0)
+	{
+		excute_line(s, buf);
+	}
+}
+
 
 
 /**
@@ -61,6 +111,7 @@ int excute_line(char *running_prog, char *line)
 			rtrn_value = excute_line(running_prog, lines[i]);
 			i++;
 		}
+		free_strstr(lines);
 	}
 	else if (_strchr(line, '&'))
 	{
@@ -70,6 +121,7 @@ int excute_line(char *running_prog, char *line)
 			rtrn_value = excute_line(running_prog, lines[i]);
 			i++;
 		}
+		free_strstr(lines);
 	}
 	else
 	{
@@ -95,6 +147,7 @@ int excute_one_cmd(char *prog_name, char *command_line)
 
 	argv[0] = prog_name;
 	get_argv(argv + 1, command_line);
-	rtrn_value = _exe(argv);
+	rtrn_value = check_cmd(argv);
+	free_argv(argv + 1);
 	return (rtrn_value);
 }

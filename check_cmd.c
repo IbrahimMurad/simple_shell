@@ -19,7 +19,7 @@ int which_command(char *s)
 	int i;
 	char *my_Builtin_cmd[] = {"exit", "env", "setenv", "unsetenv", "cd"};
 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < 5; i++)
 	{
 		if (_strcmp(s, my_Builtin_cmd[i]) == 0)
 		{
@@ -58,7 +58,7 @@ int check_cmd(char *argv[])
 			rtrn_value = excute_unsetenv(argv);
 			break;
 		default:
-			rtrn_value = _exe(argv);
+			rtrn_value = before_exe(argv);
 			break;
 	}
 	return (rtrn_value);

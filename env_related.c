@@ -11,13 +11,13 @@
 
 void set_my_env(void)
 {
-	char **temp_environ;
+	char **temp_environ = NULL;
 	size_t i = 0;
 
 	temp_environ = (char **) malloc(sizeof(char *) * 200);
 	if (temp_environ == NULL)
 	{
-		return;
+		exit(-1);
 	}
 	i = 0;
 	while (environ[i])
@@ -39,10 +39,11 @@ void free_myenv(void)
 {
 	int i;
 
-	for (i = 0; i < 200; i++)
+	for (i = 0; i < 200 && environ[i] != NULL; i++)
 	{
 		free(environ[i]);
 	}
+	free(environ);
 }
 
 /**
@@ -52,8 +53,8 @@ void free_myenv(void)
 
 strset *PATHset(void)
 {
-	strset *head, *temp;
-	char **paths, *the_path;
+	strset *head = NULL, *temp = NULL;
+	char **paths = NULL, *the_path = NULL;
 	int i = 0;
 
 	the_path = _getenv("PATH");
@@ -67,6 +68,7 @@ strset *PATHset(void)
 	head = (strset *) malloc(sizeof(strset));
 	temp = head;
 	head->data = paths[0];
+	head->next = NULL;
 	while (paths[i])
 	{
 		temp->next = (strset *) malloc(sizeof(strset));
@@ -74,6 +76,7 @@ strset *PATHset(void)
 		temp->data = paths[i];
 		i++;
 	}
+	free(paths);
 	temp = NULL;
 	return (head);
 }
@@ -121,7 +124,7 @@ void free_str_list(strset *h)
 	while (h)
 	{
 		h = h->next;
-		free(h->data);
+		free(temp->data);
 		free(temp);
 		temp = h;
 	}
