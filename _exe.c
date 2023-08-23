@@ -30,6 +30,7 @@ char *_which(char *cmd)
 		}
 		temp = temp->next;
 	}
+	free(full_path_cmd);
 	free_str_list(head);
 	return (NULL);
 }
@@ -55,6 +56,7 @@ int before_exe(char *argv[])
 	err_msg = _strcat(_strcat(_strcat(err_msg, argv[0]), ": "), argv[1]);
 	if (argv[1] == NULL)
 	{
+		free(err_msg);
 		return (-1);
 	}
 	cmd_pathname = _which(argv[1]);
@@ -63,6 +65,7 @@ int before_exe(char *argv[])
 		err_msg = _strcat(err_msg, ": not found\n");
 		write(STDERR_FILENO, err_msg, _strlen(err_msg));
 		free(err_msg);
+		free(cmd_pathname);
 		return (-1);
 	}
 	else
