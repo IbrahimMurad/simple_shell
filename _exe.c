@@ -88,7 +88,7 @@ int before_exe(char *argv[])
 int _exe(char *s, char *argv[])
 {
 	pid_t mypid;
-	int status;
+	int status, rtrn_value = -1;
 	char *err_msg;
 
 	err_msg = (char *) malloc(1024);
@@ -112,8 +112,11 @@ int _exe(char *s, char *argv[])
 	else
 	{
 		wait(&status);
+    	if (WIFEXITED(status))
+        	rtrn_value = WEXITSTATUS(status);
+    	errno = rtrn_value;
 		free(err_msg);
 		free(s);
-		return (status);
+		return (errno);
 	}
 }

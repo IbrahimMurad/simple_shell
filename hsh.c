@@ -41,7 +41,7 @@ void interactive_mode(char *s)
 	{
 		perror(s);
 	}
-	buf = (char *) malloc(8192);
+	buf = (char *) malloc(4096);
 	num_of_read_bytes = _getline(buf, STDIN_FILENO);
 	if (num_of_read_bytes == -1)
 	{
@@ -52,7 +52,6 @@ void interactive_mode(char *s)
 	if (num_of_read_bytes > 0)
 	{
 		excute_line(s, buf);
-		free(buf);
 	}
 }
 
@@ -69,7 +68,7 @@ void non_interactive_mode(char *s)
 	char *buf = NULL;
 	ssize_t num_of_read_bytes;
 
-	buf = (char *) malloc(8192);
+	buf = (char *) malloc(4096);
 	num_of_read_bytes = _getline(buf, STDIN_FILENO);
 	if (num_of_read_bytes == -1)
 	{
@@ -80,7 +79,6 @@ void non_interactive_mode(char *s)
 	if (num_of_read_bytes > 0)
 	{
 		excute_line(s, buf);
-		free(buf);
 	}
 }
 

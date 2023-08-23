@@ -16,7 +16,15 @@ ssize_t _getline(char *buf, int fd)
 	ssize_t numOfBytes;
 
 	numOfBytes = read(fd, buf, 4096);
-	buf[numOfBytes - 1] = '\0';
+	if (buf[numOfBytes - 1] == '\n')
+	{
+		buf[numOfBytes - 1] = '\0';
+	}
+	else
+	{
+		buf[numOfBytes] = '\0';
+		write(STDOUT_FILENO, "\n", 1);
+	}
 	return (numOfBytes);
 }
 
@@ -109,6 +117,7 @@ char **get_argv(char **av, char *buf)
 		i++;
 	}
 	av[i] = tokens[i];
+	free(buf);
 	free(tokens);
 	return (av);
 }
