@@ -9,7 +9,7 @@
 
 char *_which(char *cmd)
 {
-	strset *temp, *head;
+	strset *temp, *head = NULL;
 	char *full_path_cmd = NULL;
 	struct stat st;
 
@@ -19,7 +19,7 @@ char *_which(char *cmd)
 	}
 	head = PATHset();
 	temp = head;
-	while (temp != NULL)
+	while (temp)
 	{
 		free(full_path_cmd);
 		full_path_cmd = str_concat(temp->data, "/", cmd);

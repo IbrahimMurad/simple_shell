@@ -125,3 +125,26 @@ char *_strcat(char *dest, char *src)
 	return (dest);
 }
 
+
+/**
+ * add_node - adds a new node at the beginning of a strset list.
+ * @head: a pointer to a pointer to a node
+ * @str: the string (data) of the new node
+ *
+ * Return: the address of the new element, or NULL if it failed
+ */
+
+strset *add_node(strset **head, char *str)
+{
+	strset *temp;
+
+	temp = (strset *) malloc(sizeof(strset));
+	if (temp == NULL)
+	{
+		return (NULL);
+	}
+	temp->data = str;
+	temp->next = *head;
+	*head = temp;
+	return (*head);
+}

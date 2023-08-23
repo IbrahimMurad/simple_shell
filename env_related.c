@@ -53,7 +53,7 @@ void free_myenv(void)
 
 strset *PATHset(void)
 {
-	strset *head = NULL, *temp = NULL;
+	strset *head = NULL;
 	char **paths = NULL, *the_path = NULL;
 	int i = 0;
 
@@ -63,21 +63,13 @@ strset *PATHset(void)
 		printf("Couldn't find PATH\n");
 		return (NULL);
 	}
-	i = 1;
-	paths = _strtok(the_path, ":");
-	head = (strset *) malloc(sizeof(strset));
-	temp = head;
-	head->data = paths[0];
-	head->next = NULL;
+	paths = _strtok(the_path, ":"); 
 	while (paths[i])
 	{
-		temp->next = (strset *) malloc(sizeof(strset));
-		temp = temp->next;
-		temp->data = paths[i];
+		head = add_node(&head, paths[i]);
 		i++;
 	}
 	free(paths);
-	temp = NULL;
 	return (head);
 }
 
@@ -121,11 +113,17 @@ void free_str_list(strset *h)
 {
 	strset *temp = h;
 
-	while (h)
+	if (h == NULL)
 	{
-		h = h->next;
-		free(temp->data);
-		free(temp);
-		temp = h;
+		return;
 	}
+	while (h->next != NULL)
+	{
+		temp = h->next;
+		free(h->data);
+		free(h);
+		h = temp;
+	}
+	free(h->data);
+	free(h);
 }

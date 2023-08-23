@@ -74,6 +74,8 @@ void free_myenv(void);
 
 void free_str_list(strset *h);
 
+strset *add_node(strset **head, char *str);
+
 
 
 
