@@ -112,9 +112,9 @@ int _exe(char *s, char *argv[])
 	else
 	{
 		wait(&status);
-    	if (WIFEXITED(status))
-        	rtrn_value = WEXITSTATUS(status);
-    	errno = rtrn_value;
+		if (WIFEXITED(status))
+			rtrn_value = WEXITSTATUS(status);
+		errno = rtrn_value;
 		free(err_msg);
 		free(s);
 		return (errno);

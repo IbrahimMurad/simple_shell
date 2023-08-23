@@ -63,7 +63,7 @@ strset *PATHset(void)
 		printf("Couldn't find PATH\n");
 		return (NULL);
 	}
-	paths = _strtok(the_path, ":"); 
+	paths = _strtok(the_path, ":");
 	while (paths[i])
 	{
 		head = add_node(&head, paths[i]);
