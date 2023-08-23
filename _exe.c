@@ -18,6 +18,10 @@ char *_which(char *cmd)
 		return (_strdup(cmd));
 	}
 	head = PATHset();
+	if (head == NULL)
+	{
+		return (_strdup(cmd));
+	}
 	temp = head;
 	while (temp)
 	{
@@ -48,31 +52,22 @@ char *_which(char *cmd)
 
 int before_exe(char *argv[])
 {
-	int rtrn_value = -1;
-	char *cmd_pathname, *err_msg;
+	char *cmd_pathname;
 
-	err_msg = (char *) malloc(1024);
-	err_msg[0] = '\0';
-	err_msg = _strcat(_strcat(_strcat(err_msg, argv[0]), ": "), argv[1]);
-	if (argv[1] == NULL)
-	{
-		free(err_msg);
-		return (-1);
-	}
 	cmd_pathname = _which(argv[1]);
 	if (cmd_pathname == NULL)
 	{
-		err_msg = _strcat(err_msg, ": not found\n");
-		write(STDERR_FILENO, err_msg, _strlen(err_msg));
-		free(err_msg);
+		write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+		print_count();
+		argv[1] = _strcat(argv[1], ": not found\n");
+		write(STDERR_FILENO, argv[1], _strlen(argv[1]));
 		free(cmd_pathname);
-		return (-1);
+		return (errno);
 	}
 	else
 	{
-		rtrn_value = _exe(cmd_pathname, argv);
-		free(err_msg);
-		return (rtrn_value);
+		errno = _exe(cmd_pathname, argv);
+		return (errno);
 	}
 }
 
@@ -88,26 +83,23 @@ int before_exe(char *argv[])
 int _exe(char *s, char *argv[])
 {
 	pid_t mypid;
-	int status, rtrn_value = -1;
-	char *err_msg;
+	int status, rtrn_value = 2;
 
-	err_msg = (char *) malloc(1024);
-	err_msg[0] = '\0';
-	err_msg = _strcat(_strcat(_strcat(err_msg, argv[0]), ": "), argv[1]);
 	mypid = fork();
 	if (mypid == 0)
 	{
 		if (execve(s, argv + 1, environ) == 0)
 		{
-			return (0);
+			errno = 0;
+			return (errno);
 		}
 		else
 		{
-			perror(err_msg);
-			return (-1);
+			errno = 2;
+			return (errno);
+			free(s);
+			free_strstr(argv);
 		}
-		free(s);
-		free_strstr(argv);
 	}
 	else
 	{
@@ -115,7 +107,6 @@ int _exe(char *s, char *argv[])
 		if (WIFEXITED(status))
 			rtrn_value = WEXITSTATUS(status);
 		errno = rtrn_value;
-		free(err_msg);
 		free(s);
 		return (errno);
 	}

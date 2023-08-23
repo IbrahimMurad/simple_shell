@@ -60,7 +60,6 @@ strset *PATHset(void)
 	the_path = _getenv("PATH");
 	if (the_path == NULL)
 	{
-		printf("Couldn't find PATH\n");
 		return (NULL);
 	}
 	paths = _strtok(the_path, ":");

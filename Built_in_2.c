@@ -10,7 +10,6 @@
 
 int excute_setenv(char *argv[])
 {
-	int execution_return_value;
 	char *err_msg_h = str_concat(argv[0], ": ", argv[1]);
 
 	if (argv[2] == NULL || argv[2][0] == '\0')
@@ -18,18 +17,20 @@ int excute_setenv(char *argv[])
 		write(STDERR_FILENO, err_msg_h, 1024);
 		write(STDERR_FILENO, ": ", 2);
 		write(STDERR_FILENO, "no name has been passed", 24);
-		return (-1);
+		errno = 2;
+		return (errno);
 	}
-	execution_return_value = _setenv(argv[2], argv[3], 0);
-	if (execution_return_value == -1)
+	errno = _setenv(argv[2], argv[3], 0);
+	if (errno == 2)
 	{
 		write(STDERR_FILENO, err_msg_h, 1024);
 		write(STDERR_FILENO, ": ", 2);
 		write(STDERR_FILENO, "the name can not contain '='\n", 30);
-		return (-1);
+		return (errno);
 	}
 	free(err_msg_h);
-	return (0);
+	errno = 0;
+	return (errno);
 }
 
 /**
@@ -43,7 +44,6 @@ int excute_setenv(char *argv[])
 
 int excute_unsetenv(char *argv[])
 {
-	int execution_return_value;
 	char *err_msg_h = str_concat(argv[0], ": ", argv[1]);
 
 	if (argv[2] == NULL || argv[2][0] == '\0')
@@ -51,18 +51,19 @@ int excute_unsetenv(char *argv[])
 		write(STDERR_FILENO, err_msg_h, 1024);
 		write(STDERR_FILENO, ": ", 2);
 		write(STDERR_FILENO, "no name has been passed", 24);
-		return (-1);
+		errno = 2;
+		return (errno);
 	}
-	execution_return_value = _unsetenv(argv[2]);
-	if (execution_return_value == -1)
+	errno = _unsetenv(argv[2]);
+	if (errno == 2)
 	{
 		write(STDERR_FILENO, err_msg_h, 1024);
 		write(STDERR_FILENO, ": ", 2);
 		write(STDERR_FILENO, "the name can not contain '='\n", 30);
-		return (-1);
+		return (errno);
 	}
 	free(err_msg_h);
-	return (0);
+	return (errno);
 }
 
 /**
@@ -86,7 +87,8 @@ int _setenv(const char *name, const char *value, int overwrite)
 	{
 		if (name[i] == '=')
 		{
-			return (-1);
+			errno = 2;
+			return (errno);
 		}
 	}
 	i = 0;
@@ -98,7 +100,8 @@ int _setenv(const char *name, const char *value, int overwrite)
 			{
 				_strncpy(environ[i] + name_len + 1, value, _strlen(value));
 			}
-			return (0);
+			errno = 0;
+			return (errno);
 		}
 		i++;
 	}
@@ -107,7 +110,8 @@ int _setenv(const char *name, const char *value, int overwrite)
 	_strncpy(environ[i] + name_len, "=", 1);
 	_strncpy(environ[i] + name_len + 1, value, vallen);
 	environ[i + 1] = NULL;
-	return (0);
+	errno = 0;
+	return (errno);
 }
 
 
@@ -128,7 +132,8 @@ int _unsetenv(const char *name)
 	{
 		if (name[i] == '=')
 		{
-			return (-1);
+			errno = 2;
+			return (errno);
 		}
 	}
 	while (environ[i])
@@ -141,9 +146,11 @@ int _unsetenv(const char *name)
 				environ[i] = environ[i + 1];
 			}
 			environ[i] = environ[i + 1];
-			return (0);
+			errno = 0;
+			return (errno);
 		}
 		i++;
 	}
-	return (0);
+	errno = 0;
+	return (errno);
 }

@@ -53,18 +53,13 @@ int sh_atoi(char *s)
 
 int my_exit(char *argv[])
 {
-	int status;
 	char newline = '\n';
 
-	if (argv[2] == NULL)
-	{
-		status = 0;
-	}
-	else
+	if (argv[2] != NULL)
 	{
 		if (is_anumber(argv[2]) == 0)
 		{
-			status = sh_atoi(argv[2]);
+			errno = sh_atoi(argv[2]);
 		}
 		else
 		{
@@ -75,15 +70,14 @@ int my_exit(char *argv[])
 			write(STDERR_FILENO, ": Illegal number: ", 18);
 			write(STDERR_FILENO, argv[2], _strlen(argv[2]));
 			write(STDERR_FILENO, &newline, 1);
-			free_myenv();
-			free_argv(argv + 1);
-			return (-1);
+			errno = 2;
+			return (2);
 		}
 	}
 	free_myenv();
 	free_argv(argv + 1);
-	exit(status);
-	return (status);
+	exit(errno);
+	return (errno);
 }
 
 /**
@@ -103,7 +97,8 @@ int _env(char *argv[])
 		if (write(STDOUT_FILENO, environ[i], _strlen(environ[i])) == -1)
 		{
 			perror(argv[0]);
-			return (-1);
+			errno = 2;
+			return (errno);
 		}
 		write(STDOUT_FILENO, "\n", 1);
 		i++;

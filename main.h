@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <errno.h>
 
 
@@ -45,12 +46,16 @@ char *_strchr(char *s, const char c);
 
 char *_strcat(char *dest, char *src);
 
+char *numtostr(char *buf, int num);
+
 
 
 
 /* Essential tools for my simple-shell project */
 
 char **_strtok(char *s, const char *delim);
+
+char *get_token(char **str_ptr, const char *delim);
 
 ssize_t _getline(char buf[], int fd);
 
@@ -82,11 +87,13 @@ strset *add_node(strset **head, char *str);
 
 /* Excution-related functions */
 
-void my_hsh(char *s);
+int my_hsh(char *s);
 
-void interactive_mode(char *s);
+int interactive_mode(char *s);
 
-void non_interactive_mode(char *s);
+int non_interactive_mode(char *s);
+
+int get_separator(char *buf, int *index);
 
 int excute_line(char *running_prog, char *line);
 
@@ -120,5 +127,7 @@ int _setenv(const char *name, const char *value, int overwrite);
 int _unsetenv(const char *name);
 
 int _cd(const char *dir);
+
+void print_count(void);
 
 #endif
