@@ -126,7 +126,7 @@ int _setenv(const char *name, const char *value, int overwrite);
 
 int _unsetenv(const char *name);
 
-int _cd(const char *dir);
+int _cd(char *argv[]);
 
 void print_count(void);
 

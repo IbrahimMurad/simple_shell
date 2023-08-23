@@ -57,6 +57,9 @@ int check_cmd(char *argv[])
 		case UNSETENV:
 			rtrn_value = excute_unsetenv(argv);
 			break;
+		case CD:
+			rtrn_value = _cd(argv);
+			break;
 		default:
 			rtrn_value = before_exe(argv);
 			break;

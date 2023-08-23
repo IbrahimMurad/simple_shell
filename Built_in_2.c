@@ -154,3 +154,54 @@ int _unsetenv(const char *name)
 	errno = 0;
 	return (errno);
 }
+
+/**
+ * _cd - changes the current working directory
+ * @argv: an array of strings that holds the running program's name,
+ * and the running command and its arguments
+ *
+ * Return: 0 on success or 2 on error
+*/
+
+int _cd(char *argv[])
+{
+	char *home, *prev_dir, *curr_dir = NULL;
+
+	home = _getenv("HOME");
+	prev_dir = _getenv("OLDPWD");
+	curr_dir = getcwd(curr_dir, 1024);
+	if (argv[2] == NULL)
+	{
+		errno = chdir(home);
+	}
+	else if (_strcmp(argv[2], "-") == 0)
+	{
+		if (prev_dir == NULL || prev_dir[0] == '\0')
+			errno = chdir(home);
+		else
+			errno = chdir(prev_dir);
+	}
+	else
+	{
+		errno = chdir(argv[2]);
+	}
+	if (errno != 0)
+	{
+		errno = 2;
+		write(STDERR_FILENO, argv[0], _strlen(argv[0]));
+		print_count();
+		write(STDERR_FILENO, argv[1], _strlen(argv[1]));
+		write(STDERR_FILENO, ": can't cd to ", 15);
+		write(STDERR_FILENO, argv[2], _strlen(argv[2]));
+		write(STDERR_FILENO, "\n", 1);
+		free(curr_dir);
+		return (2);
+	}
+	else
+	{
+		_setenv("OLDPWD", curr_dir, 1);
+		_setenv("PWD", getcwd(curr_dir, 1024), 1);
+		free(curr_dir);
+	}
+	return (0);
+}
