@@ -80,6 +80,7 @@ void non_interactive_mode(char *s)
 	if (num_of_read_bytes > 0)
 	{
 		excute_line(s, buf);
+		free(buf);
 	}
 }
 
