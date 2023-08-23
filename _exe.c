@@ -20,7 +20,7 @@ char *_which(char *cmd)
 	head = PATHset();
 	if (head == NULL)
 	{
-		return (_strdup(cmd));
+		return (NULL);
 	}
 	temp = head;
 	while (temp)

@@ -11,7 +11,7 @@
 
 int excute_line(char *running_prog, char *line)
 {
-	char **lines, *separator[] = {"#", "\n", ";", "&&"};
+	char *lines[64], *separator[] = {"#", "\n", ";", "&&"};
 	int i = 0, rtrn_value, sep_index, sep_i_str;
 
 	sep_index = get_separator(line, &sep_i_str);
@@ -24,7 +24,8 @@ int excute_line(char *running_prog, char *line)
 		case 1:
 		case 2:
 		case 3:
-			lines = _strtok(line, separator[sep_index]);
+			_strtok(lines, line, separator[sep_index]);
+			free(line);
 			while (lines[i])
 			{
 				rtrn_value = excute_line(running_prog, lines[i]);
@@ -51,7 +52,7 @@ int excute_line(char *running_prog, char *line)
 */
 int get_separator(char *buf, int *index)
 {
-	char *separator[] = {"#", "\n", ";", "&&"};
+	char *separator[] = {"#", "\n", ";", "&&", NULL};
 	int i = 0, j;
 
 	*index = 0;
@@ -86,7 +87,7 @@ int get_separator(char *buf, int *index)
 
 int excute_one_cmd(char *prog_name, char *command_line)
 {
-	char *argv[64];
+	char *argv[65];
 	int rtrn_value;
 
 	argv[0] = prog_name;

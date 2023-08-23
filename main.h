@@ -53,7 +53,7 @@ char *numtostr(char *buf, int num);
 
 /* Essential tools for my simple-shell project */
 
-char **_strtok(char *s, const char *delim);
+char **_strtok(char *tokens[], char *s, const char *delim);
 
 char *get_token(char **str_ptr, const char *delim);
 

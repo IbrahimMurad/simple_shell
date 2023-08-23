@@ -54,21 +54,20 @@ void free_myenv(void)
 strset *PATHset(void)
 {
 	strset *head = NULL;
-	char **paths = NULL, *the_path = NULL;
+	char *paths[64], *the_path = NULL;
 	int i = 0;
 
 	the_path = _getenv("PATH");
-	if (the_path == NULL)
+	if (the_path == NULL || the_path[0] == '\0')
 	{
 		return (NULL);
 	}
-	paths = _strtok(the_path, ":");
+	_strtok(paths, the_path, ":");
 	while (paths[i])
 	{
 		head = add_node(&head, paths[i]);
 		i++;
 	}
-	free(paths);
 	return (head);
 }
 

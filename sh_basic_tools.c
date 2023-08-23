@@ -36,16 +36,17 @@ ssize_t _getline(char *buf, int fd)
  * Return: a pointer to an array of strings
 */
 
-char **_strtok(char *s, const char *delim)
+char **_strtok(char *tokens[], char *s, const char *delim)
 {
-	char **tokens = NULL, *temp_s = s;
+	char *temp_s;
 	size_t i = 0;
 
-	tokens = (char **) malloc(sizeof(char *) * 64);
-	if (tokens == NULL)
+	if (s == NULL)
 	{
-		return (NULL);
+		tokens[0] = NULL;
+		return (tokens);
 	}
+	temp_s = s;
 	while (*temp_s)
 	{
 		tokens[i] = get_token(&temp_s, delim);
@@ -66,7 +67,7 @@ char **_strtok(char *s, const char *delim)
 
 char *get_token(char **str_ptr, const char *delim)
 {
-	char *s = *str_ptr, *token;
+	char *s = *str_ptr, *token = NULL;
 	size_t dellen, i = 0, j = 0;
 
 	dellen = _strlen(delim);
@@ -108,17 +109,7 @@ char *get_token(char **str_ptr, const char *delim)
 
 char **get_argv(char **av, char *buf)
 {
-	char **tokens;
-	int i = 0;
-
-	tokens = _strtok(buf, " ");
-	while (tokens[i])
-	{
-		av[i] = tokens[i];
-		i++;
-	}
-	av[i] = tokens[i];
+	av = _strtok(av, buf, " ");
 	free(buf);
-	free(tokens);
 	return (av);
 }

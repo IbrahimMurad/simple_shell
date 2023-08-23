@@ -11,9 +11,11 @@
 int main(int ac, char *av[])
 {
 	int fd;
-	char *buf, *err_msg_h, *err_msg_e;
+	ssize_t readed;
+	char *buf = NULL, *err_msg_h = NULL, *err_msg_e = NULL;
 
 	set_my_env();
+	errno = 0;
 	if (ac == 1)
 	{
 		my_hsh(av[0]);
@@ -32,9 +34,17 @@ int main(int ac, char *av[])
 			return (2);
 		}
 		buf = (char *) malloc(4096);
-		read(fd, buf, 4096);
-		excute_line(av[0], buf);
-		close(fd);
+		readed = read(fd, buf, 4096);
+		if (readed == 0)
+		{
+			free(buf);
+			close(fd);
+		}
+		else
+		{
+			excute_line(av[0], buf);
+			close(fd);
+		}
 	}
 	free_myenv();
 	return (0);
