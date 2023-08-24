@@ -36,7 +36,7 @@ int my_hsh(char *s)
 int interactive_mode(char *s)
 {
 	char *prompt = "#cisfun$ ";
-	static char *buf = NULL;
+	char *buf = NULL;
 	ssize_t num_of_read_bytes;
 	int rtrn_value = 0;
 

@@ -30,6 +30,7 @@ ssize_t _getline(char *buf, int fd)
 
 /**
  * _strtok - splits a string into tokens
+ * @tokens: an array to hold the tokens
  * @s: the passed string to be splitted
  * @delim: the elimiter that separates the tokens
  *
